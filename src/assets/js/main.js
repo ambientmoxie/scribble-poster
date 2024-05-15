@@ -13,7 +13,7 @@ const BACKGROUND = "#050304";
 const PALETTE = ["#9BAACF", "#CC694F", "#F7E569", "#538A82", "#4A7CB8", "#C096B9"];
 // const CHANCE = 0;
 const SCALE = 1;
-const BORDER = 10 * SCALE;
+const BORDER = 5 * SCALE;
 
 let sp, h, w, segments;
 let debug = false;
@@ -71,7 +71,7 @@ function sketch(p) {
   // --------------------------
 
   function drawSecondaryScribble(color) {
-    segments = 30;
+    segments = 10;
 
     // Create a local copy of smAreas
     let localSmAreas = smAreas(p, sp, w, h);
