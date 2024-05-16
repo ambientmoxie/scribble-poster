@@ -1,6 +1,5 @@
 // Define 4 areas coordinates
 function lgAreas(p, sp, w, h) {
-  // Redefine width and height variable for better usage
   h = sp.height;
   w = sp.width;
 
@@ -36,15 +35,8 @@ function lgAreas(p, sp, w, h) {
 
 // Define 4 areas coordinates
 function aroundAreas(p, sp, w, h) {
-  // Redefine width and height variable for better usage
   h = sp.height;
   w = sp.width;
-
-  // |---|---|
-  // | 1 | 2 |
-  // |---|---|
-  // | 4 | 3 |
-  // |---|---|
 
   return [
     // area 1

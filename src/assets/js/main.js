@@ -1,7 +1,6 @@
 import "../scss/style.scss";
 import p5 from "p5";
 import { isMobile } from "mobile-device-detect";
-// import "p5.js-svg";
 import { Pane } from "tweakpane";
 import { createBorder, grid } from "./lib/debug-ui";
 import { smAreas, lgAreas, aroundAreas } from "./lib/areas";
@@ -11,8 +10,8 @@ import { smAreas, lgAreas, aroundAreas } from "./lib/areas";
 const PARAMS = {
   backgroundColor: "#050304",
   palette: ["#9BAACF", "#CC694F", "#F7E569", "#538A82", "#4A7CB8", "#C096B9"],
-  scale: 1,
-  border: 10,
+  scale: 0.8,
+  border: 30,
   debug: false,
 };
 
@@ -25,8 +24,6 @@ function sketch(p) {
   // ----------------------------------------------------
 
   p.setup = function () {
-    // Uncomment for public online version
-
     // const ratio = 595 / 842; // a4 ratio
     // const maxHeight = window.innerHeight - 100;
     // w = (maxHeight * ratio) * scale;
@@ -229,8 +226,7 @@ function sketch(p) {
   }
 }
 
-// Display fence
-
+// Prevent sketch to be seen on mobile devices
 
 if (!isMobile) {
   new p5(sketch);
@@ -247,4 +243,3 @@ function addMobileFence() {
   fence.appendChild(fenceContent);
   document.body.appendChild(fence);
 }
-

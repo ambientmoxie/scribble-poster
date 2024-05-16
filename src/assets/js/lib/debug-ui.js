@@ -1,5 +1,4 @@
 function createBorder(p, w, h, BORDER) {
-  // Redefine width and height variable for better usage
   h = p.height;
   w = p.width;
 
@@ -11,9 +10,7 @@ function createBorder(p, w, h, BORDER) {
   p.rect(w - BORDER, 0, BORDER, h);
 }
 
-// Debug grid
 function grid(p, w, h, BORDER) {
-  // Redefine width and height variable for better usage
   h = p.height - BORDER * 2;
   w = p.width - BORDER * 2;
 
