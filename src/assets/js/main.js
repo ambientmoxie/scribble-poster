@@ -11,7 +11,7 @@ const PARAMS = {
   backgroundColor: "#050304",
   palette: ["#9BAACF", "#CC694F", "#F7E569", "#538A82", "#4A7CB8", "#C096B9"],
   scale: 0.8,
-  border: 30,
+  border: 10,
   debug: false,
 };
 
@@ -192,7 +192,7 @@ function sketch(p) {
     });
 
     const debugBtn = pane.addButton({
-      title: debug ? "off" : "on",
+      title: debug ? "on" : "off",
       label: "Debug Mode",
     });
 
