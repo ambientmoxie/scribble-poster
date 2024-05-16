@@ -11,6 +11,7 @@
     "network": "vite --host"
   },
   "devDependencies": {
+    "mobile-device-detect": "^0.4.3",
     "p5": "^1.9.3",
     "p5.js-svg": "^0.5.2",
     "sass": "^1.64.2",

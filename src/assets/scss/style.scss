@@ -18,6 +18,25 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 100vw;
-  min-height: 100vh;
+  // min-width: 100vw;
+  min-height: 100svh;
+
+}
+
+#fence {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100svh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  color: white;
+  background-color: black;
+}
+
+canvas {
+  z-index: 1;
 }

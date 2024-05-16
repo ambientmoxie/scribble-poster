@@ -1,42 +1,54 @@
 import "../scss/style.scss";
 import p5 from "p5";
-import "p5.js-svg"; // Import p5.js-svg
+import { isMobile } from "mobile-device-detect";
+// import "p5.js-svg";
 import { Pane } from "tweakpane";
 import { createBorder, grid } from "./lib/debug-ui";
 import { smAreas, lgAreas, aroundAreas } from "./lib/areas";
 
-const BACKGROUND = "#050304";
-// const BACKGROUND = "#C1D2E3";
-// const PALETTE = ["#FFE521", "#B2E8FC", "#000", "#692742", "#868675", "#E575A2"];
-// const PALETTE = ["#38568C", "#B2E8FC", "#315139", "#434240", "#714E35", "#DC6C64"];
-// const PALETTE = ["#9BAACF", "#CC694F", "#F7E569", "#538A82", "#4A7CB8", "#C096B9"];
-const PALETTE = ["#9BAACF", "#CC694F", "#F7E569", "#538A82", "#4A7CB8", "#C096B9"];
-// const CHANCE = 0;
-const SCALE = 1;
-const BORDER = 5 * SCALE;
-
-let sp, h, w, segments;
-let debug = false;
-
 // todo: refactore
 
+const PARAMS = {
+  backgroundColor: "#050304",
+  palette: ["#9BAACF", "#CC694F", "#F7E569", "#538A82", "#4A7CB8", "#C096B9"],
+  scale: 1,
+  border: 10,
+  debug: false,
+};
+
+// Destructuring for ease of use.
+let { backgroundColor, palette, scale, border, debug } = PARAMS;
+let sp, h, w, segments;
+
 function sketch(p) {
-  // --------------------------
   // Setup P5 canvas
-  // --------------------------
+  // ----------------------------------------------------
 
   p.setup = function () {
-    p.createCanvas(595 * SCALE, 842 * SCALE);
-    sp = p.createGraphics(p.width - BORDER * 2, p.height - BORDER * 2);
-    drawScene(p);
-    initTweek();
+    // Uncomment for public online version
 
-    // console.log(smAreas(p, sp, w, h));
+    // const ratio = 595 / 842; // a4 ratio
+    // const maxHeight = window.innerHeight - 100;
+    // w = (maxHeight * ratio) * scale;
+    // h = maxHeight * scale;
+
+    w = 595 * scale;
+    h = 842 * scale;
+
+    p.createCanvas(w, h);
+    updateGraphicsBuffer();
+    drawScene(p);
+    if (!isMobile) {
+      initTweek();
+    }
   };
 
-  // --------------------------
-  // Primary scribble
-  // --------------------------
+  function updateGraphicsBuffer() {
+    sp = p.createGraphics(w - border * 2, h - border * 2);
+  }
+
+  // Main scribble
+  // ----------------------------------------------------
 
   function drawMainScribble(color) {
     segments = 20;
@@ -47,7 +59,7 @@ function sketch(p) {
       let areaIndex = index % lgAreas(p, sp, w, h).length;
 
       if (debug) {
-        sp.strokeWeight(6 * SCALE);
+        sp.strokeWeight(6 * scale);
         sp.point(
           lgAreas(p, sp, w, h)[areaIndex].x,
           lgAreas(p, sp, w, h)[areaIndex].y
@@ -56,7 +68,7 @@ function sketch(p) {
         areaIndex = index % lgAreas(p, sp, w, h).length;
         sp.stroke(color);
         sp.noFill();
-        sp.strokeWeight(2 * SCALE);
+        sp.strokeWeight(2 * scale);
         sp.vertex(
           lgAreas(p, sp, w, h)[areaIndex].x,
           lgAreas(p, sp, w, h)[areaIndex].y
@@ -66,9 +78,8 @@ function sketch(p) {
     sp.endShape();
   }
 
-  // --------------------------
   // Secondary scribble
-  // --------------------------
+  // ----------------------------------------------------
 
   function drawSecondaryScribble(color) {
     segments = 10;
@@ -92,10 +103,10 @@ function sketch(p) {
       sp.noFill();
 
       if (debug) {
-        sp.strokeWeight(6 * SCALE);
+        sp.strokeWeight(6 * scale);
         sp.point(area.x, area.y);
       } else {
-        sp.strokeWeight(1 * SCALE);
+        sp.strokeWeight(1 * scale);
         sp.vertex(area.x, area.y);
       }
 
@@ -105,11 +116,10 @@ function sketch(p) {
     sp.endShape();
   }
 
-  // --------------------------
   // Around scribble
-  // --------------------------
+  // ----------------------------------------------------
 
-  function drawAroundScribble(color) {
+  function drawClosingScribble(color) {
     segments = 30;
 
     sp.beginShape();
@@ -119,13 +129,13 @@ function sketch(p) {
       sp.noFill();
 
       if (debug) {
-        sp.strokeWeight(6 * SCALE);
+        sp.strokeWeight(6 * scale);
         sp.point(
           aroundAreas(p, sp, w, h)[areaIndex].x,
           aroundAreas(p, sp, w, h)[areaIndex].y
         );
       } else {
-        sp.strokeWeight(1 * SCALE);
+        sp.strokeWeight(1 * scale);
         sp.vertex(
           aroundAreas(p, sp, w, h)[areaIndex].x,
           aroundAreas(p, sp, w, h)[areaIndex].y
@@ -135,71 +145,106 @@ function sketch(p) {
     sp.endShape();
   }
 
-  // --------------------------
   // Draw the scribble canvas
-  // --------------------------
+  // ----------------------------------------------------
 
   function drawScribblePaper() {
     if (debug) {
       sp.background(0, 255, 0);
     } else {
-      sp.background(BACKGROUND);
+      sp.background(backgroundColor);
     }
 
-    for (let index = 0; index < PALETTE.length; index++) {
-      drawSecondaryScribble(PALETTE[index]);
-      drawAroundScribble(PALETTE[index]);
+    for (let index = 0; index < palette.length; index++) {
+      drawSecondaryScribble(palette[index]);
+      drawClosingScribble(palette[index]);
     }
 
-    drawMainScribble(PALETTE[0]);
+    drawMainScribble(palette[0]);
   }
 
-  // --------------------------
   // Draw the whole scene
-  // --------------------------
+  // ----------------------------------------------------
   // Including debug grid and borders
 
   function drawScene(p) {
-    p.background(BACKGROUND);
+    p.background(backgroundColor);
     p.noFill();
 
     drawScribblePaper();
-    p.image(sp, BORDER, BORDER);
+    p.image(sp, border, border);
 
     if (debug) {
-      grid(p, w, h, BORDER);
-      createBorder(p, w, h, BORDER);
+      grid(p, w, h, border);
+      createBorder(p, w, h, border);
     }
   }
 
-  // --------------------------
   // Init tweekPane panel
-  // --------------------------
+  // ----------------------------------------------------
 
   function initTweek() {
     const pane = new Pane();
 
-    // Init save and debug buttons
+    // Border around graphic buffer
+    pane.addBinding(PARAMS, "border", {
+      label: "Borders",
+      min: 0,
+      max: 100,
+      step: 1,
+    });
+
     const debugBtn = pane.addButton({
       title: debug ? "off" : "on",
       label: "Debug Mode",
     });
-    const saveBtn = pane.addButton({
-      title: "download",
+
+    const refreshBtn = pane.addButton({
+      title: "Refresh",
     });
 
-    // Redraw the scene in !debug mode
+    const saveBtn = pane.addButton({
+      title: "Download",
+    });
+
     debugBtn.on("click", () => {
       debug = !debug;
       drawScene(p);
       initTweek();
     });
 
-    // Save the canvas in png
+    refreshBtn.on("click", () => {
+      drawScene(p);
+    });
+
     saveBtn.on("click", () => {
       p.save("myCanvas.png");
+    });
+
+    pane.on("change", (ev) => {
+      border = ev.value; // Reassign the new border value to the destructured variable.
+      updateGraphicsBuffer();
+      drawScene(p);
     });
   }
 }
 
-new p5(sketch);
+// Display fence
+
+
+if (!isMobile) {
+  new p5(sketch);
+} else {
+  addMobileFence();
+}
+
+function addMobileFence() {
+  const fence = document.createElement("div");
+  fence.id = "fence";
+  const fenceContent = document.createTextNode(
+    '"Scribble tool" is not optimized for mobile devices.'
+  );
+  fence.appendChild(fenceContent);
+  document.body.appendChild(fence);
+}
+
