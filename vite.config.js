@@ -3,6 +3,6 @@ export default {
   base: "/projects/scribble-poster",
   build: {
     outDir: "../dist",
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 2000,
   },
 };

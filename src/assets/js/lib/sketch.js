@@ -120,8 +120,6 @@ export default function sketch(p) {
   // ----------------------------------------------------
 
   function drawClosingScribble(color) {
-    console.log(scale);
-
     segments = 30;
 
     sp.beginShape();
