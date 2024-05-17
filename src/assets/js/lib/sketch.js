@@ -23,7 +23,7 @@ export default function sketch(p) {
     sp = p.createGraphics(w - border * 2, h - border * 2);
 
     // Init control panel only on mobile devices
-    if (!isMobile) initTweak();
+    initTweak();
 
     // Prevent draw function from looping
     p.noLoop();
